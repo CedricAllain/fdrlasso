@@ -12,7 +12,7 @@ from scipy.stats import norm
 from scipy.optimize import fminbound
 
 # Functions
-def fdrlasso(tpp, delta, epsi):
+def fdrlasso(tpp, delta, epsi, verbose=0):
     """ 
      This function calculates the Lasso trade-off curve given tpp (true
      positive proportion), delta = n/p (shape of the design matrix, or
@@ -22,8 +22,9 @@ def fdrlasso(tpp, delta, epsi):
      should be no larger than u^\star = powermax(delta, epsi)
     """
     if tpp > powermax(delta, epsi):
-        print('Invalid input!')
-        return None
+        if verbose > 0:
+            print('Invalid input!')
+        return 1
     
     if tpp == 0:
         return 0
@@ -92,6 +93,6 @@ def powermax(delta, epsilon):
 
 def epsilonDT(delta):
     minus_f = lambda x: -(1+2/delta*x*norm.pdf(x) - 2/delta*(1+x**2)*norm.cdf(-x))/(1+x**2-2*(1+x**2)*norm.cdf(-x)+2*x*norm.pdf(x))*delta
-    alpha_phase = fminbound(func=minus_f, x1=0, x_2=8, maxiter=1000, maxfun=1000, disp=0)
+    alpha_phase = fminbound(func=minus_f, x1=0, x2=8, maxfun=1000, disp=0)
     epsi = -minus_f(alpha_phase)
     return epsi
