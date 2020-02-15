@@ -1,4 +1,3 @@
-
 # --------------------------------------------------------------------------
 # Adaptation in Python of the Matlab code.
 # Authors : Cédric Allain and Clotilde Miura
@@ -6,14 +5,13 @@
 # Source: https://github.com/wjsu/fdrlasso/blob/master/fdrlasso.m
 # --------------------------------------------------------------------------
 
+# Packages
 import sys
 import numpy as np
 from scipy.stats import norm
-from scipy.optimize import fmin
+from scipy.optimize import fminbound
 
-import warnings
-warnings.filterwarnings("ignore")
-
+# Functions
 def fdrlasso(tpp, delta, epsi):
     """ 
      This function calculates the Lasso trade-off curve given tpp (true
@@ -94,8 +92,6 @@ def powermax(delta, epsilon):
 
 def epsilonDT(delta):
     minus_f = lambda x: -(1+2/delta*x*norm.pdf(x) - 2/delta*(1+x**2)*norm.cdf(-x))/(1+x**2-2*(1+x**2)*norm.cdf(-x)+2*x*norm.pdf(x))*delta
-    #minus_f = lambda x: -(1+2/delta*x*norm.pdf(x) - 2/delta*(1+x**2)*norm.cdf(-x))/(1+x**2-2*(1+x**2)*norm.cdf(-x)+2*x*norm.pdf(x) + sys.float_info.epsilon)*delta
-    min_temp = fmin(func=minus_f, x0=1, disp=0)[0]
-    alpha_phase = np.min([min_temp, minus_f(0), minus_f(8)])
+    alpha_phase = fminbound(func=minus_f, x1=0, x_2=8, maxiter=1000, maxfun=1000, disp=0)
     epsi = -minus_f(alpha_phase)
     return epsi
