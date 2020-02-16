@@ -3,7 +3,7 @@ This is a Python adaptation of the standalone Matlab function that calculates th
 
 Source for the original Matlab function: https://github.com/wjsu/fdrlasso
 
-This paper_implementation Jupyter notebook has been developed with the aim of reproducing the authors' results, but also to extend them to the framework of the positive Lasso.
+The paper_implementation Jupyter notebook has been developed with the aim of reproducing the authors' results, but also to extend them to the framework of the positive Lasso.
 
 This work was carried out as part of a project for the Master course Theoretical guidelines for high dimensional data analysis, taught by Christophe Giraud, professor at the Université Paris-Sud.
 
